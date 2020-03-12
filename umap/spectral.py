@@ -71,7 +71,7 @@ def component_layout(
                 distance_matrix[c_j, c_i] = dist
     else:
         for label in range(n_components):
-            component_centroids[label] = data[component_labels == label]
+            component_centroids[label] = data[component_labels == label]\
                                          .mean(axis=0)
 
         distance_matrix = pairwise_distances(
