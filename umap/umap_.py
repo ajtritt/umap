@@ -1492,6 +1492,8 @@ class UMAP(BaseEstimator):
                     self.graph_, y_, far_dist=far_dist
                 )
             else:
+                if len(y_.shape) == 1:
+                    y_ = y_.reshape(-1, 1)
                 if self.target_n_neighbors == -1:
                     target_n_neighbors = self._n_neighbors
                 else:
@@ -1500,7 +1502,7 @@ class UMAP(BaseEstimator):
                 # Handle the small case as precomputed as before
                 if y.shape[0] < 4096:
                     ydmat = pairwise_distances(
-                        y_[np.newaxis, :].T,
+                        y_,
                         metric=self.target_metric,
                         **self._target_metric_kwds
                     )
@@ -1520,7 +1522,7 @@ class UMAP(BaseEstimator):
                 else:
                     # Standard case
                     target_graph = fuzzy_simplicial_set(
-                        y_[np.newaxis, :].T,
+                        y_,
                         target_n_neighbors,
                         random_state,
                         self.target_metric,
